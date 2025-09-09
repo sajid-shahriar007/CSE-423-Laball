@@ -178,128 +178,128 @@ if __name__ == "__main__":
 
 
 
-#Task 2
+Task 2
 
-# from OpenGL.GL import *
-# from OpenGL.GLUT import *
-# from OpenGL.GLU import *
-# import random
-# import sys
-
-
-# WIDTH = 1280
-# HEIGHT = 720
-
-# particles = []
-# stopped = False
-# blink_frame = 0
+from OpenGL.GL import *
+from OpenGL.GLUT import *
+from OpenGL.GLU import *
+import random
+import sys
 
 
-# class Particle:
-#     def __init__(self, x_ord, y_ord):
-#         self.x = x_ord
-#         self.y = y_ord
-#         self.vel_x = random.choice([-1, 1]) * random.uniform(0.1, 0.3)
-#         self.vel_y = random.choice([-1, 1]) * random.uniform(0.1, 0.3)
-#         self.color = (random.random(), random.random(), random.random())
-#         self.is_blinking = False
-#         self.is_visible = True
+WIDTH = 1280
+HEIGHT = 720
+
+particles = []
+stopped = False
+blink_frame = 0
 
 
-# def setup_view():
-#     glClearColor(0.0, 0.0, 0.0, 1.0)
-#     gluOrtho2D(0, WIDTH, 0, HEIGHT)
-#     glPointSize(15)
+class Particle:
+    def __init__(self, x_ord, y_ord):
+        self.x = x_ord
+        self.y = y_ord
+        self.vel_x = random.choice([-1, 1]) * random.uniform(0.1, 0.3)
+        self.vel_y = random.choice([-1, 1]) * random.uniform(0.1, 0.3)
+        self.color = (random.random(), random.random(), random.random())
+        self.is_blinking = False
+        self.is_visible = True
 
 
-# def render():
-#     glClear(GL_COLOR_BUFFER_BIT)
-#     for p in particles:
-#         if p.is_visible:
-#             glColor3fv(p.color)
-#             glBegin(GL_POINTS)
-#             glVertex2f(p.x, p.y)
-#             glEnd()
-#     glutSwapBuffers()
+def setup_view():
+    glClearColor(0.0, 0.0, 0.0, 1.0)
+    gluOrtho2D(0, WIDTH, 0, HEIGHT)
+    glPointSize(15)
 
 
-# def update_scene():
-#     global blink_frame
+def render():
+    glClear(GL_COLOR_BUFFER_BIT)
+    for p in particles:
+        if p.is_visible:
+            glColor3fv(p.color)
+            glBegin(GL_POINTS)
+            glVertex2f(p.x, p.y)
+            glEnd()
+    glutSwapBuffers()
 
-#     if not stopped:
-#         for p in particles:
-#             p.x += p.vel_x
-#             p.y += p.vel_y
 
-#             if p.x <= 0 or p.x >= WIDTH:
-#                 p.vel_x *= -1
-#             if p.y <= 0 or p.y >= HEIGHT:
-#                 p.vel_y *= -1
+def update_scene():
+    global blink_frame
+
+    if not stopped:
+        for p in particles:
+            p.x += p.vel_x
+            p.y += p.vel_y
+
+            if p.x <= 0 or p.x >= WIDTH:
+                p.vel_x *= -1
+            if p.y <= 0 or p.y >= HEIGHT:
+                p.vel_y *= -1
 
         
-#         if blink_frame % 20 == 0:
-#             for p in particles:
-#                 if p.is_blinking:
-#                     p.is_visible = not p.is_visible
+        if blink_frame % 20 == 0:
+            for p in particles:
+                if p.is_blinking:
+                    p.is_visible = not p.is_visible
 
-#         blink_frame += 1
+        blink_frame += 1
 
-#     glutPostRedisplay()
-
-
-# def on_mouse_click(button, state, x, y):
-#     if state == GLUT_DOWN:
-#         flipped_y = HEIGHT - y
-
-#         if button == GLUT_RIGHT_BUTTON:
-#             particles.append(Particle(x, flipped_y))
-#             print(f"[+] Particle added at ({x}, {flipped_y})")
-
-#         elif button == GLUT_LEFT_BUTTON:
-#             any_blinking = any(p.is_blinking for p in particles)
-#             for p in particles:
-#                 p.is_blinking = not any_blinking
-#                 if not p.is_blinking:
-#                     p.is_visible = True
-#             print(f"[~] Blinking {'enabled' if not any_blinking else 'disabled'} for all particles")
+    glutPostRedisplay()
 
 
-# def on_key_press(key, x, y):
-#     global stopped
-#     if key == b'\x1b': 
-#         print("[x] Exiting")
-#         sys.exit()
-#     elif key == b' ':
-#         stopped = not stopped
-#         print(f"[||] {'Paused' if stopped else 'Resumed'}")
+def on_mouse_click(button, state, x, y):
+    if state == GLUT_DOWN:
+        flipped_y = HEIGHT - y
+
+        if button == GLUT_RIGHT_BUTTON:
+            particles.append(Particle(x, flipped_y))
+            print(f"[+] Particle added at ({x}, {flipped_y})")
+
+        elif button == GLUT_LEFT_BUTTON:
+            any_blinking = any(p.is_blinking for p in particles)
+            for p in particles:
+                p.is_blinking = not any_blinking
+                if not p.is_blinking:
+                    p.is_visible = True
+            print(f"[~] Blinking {'enabled' if not any_blinking else 'disabled'} for all particles")
 
 
-# def on_special_key(key, x, y):
-#     if key == GLUT_KEY_UP:
-#         for p in particles:
-#             p.vel_x *= 1.1
-#             p.vel_y *= 1.1
-#         print("[↑] Increased speed")
-#     elif key == GLUT_KEY_DOWN:
-#         for p in particles:
-#             p.vel_x *= 0.9
-#             p.vel_y *= 0.9
-#         print("[↓] Decreased speed")
+def on_key_press(key, x, y):
+    global stopped
+    if key == b'\x1b': 
+        print("[x] Exiting")
+        sys.exit()
+    elif key == b' ':
+        stopped = not stopped
+        print(f"[||] {'Paused' if stopped else 'Resumed'}")
 
 
-# def main():
-#     glutInit(sys.argv)
-#     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB)
-#     glutInitWindowSize(WIDTH, HEIGHT)
-#     glutCreateWindow(b"The Amazing Box")
-#     setup_view()
-#     glutDisplayFunc(render)
-#     glutIdleFunc(update_scene)
-#     glutMouseFunc(on_mouse_click)
-#     glutKeyboardFunc(on_key_press)
-#     glutSpecialFunc(on_special_key)
-#     glutMainLoop()
+def on_special_key(key, x, y):
+    if key == GLUT_KEY_UP:
+        for p in particles:
+            p.vel_x *= 1.1
+            p.vel_y *= 1.1
+        print("[↑] Increased speed")
+    elif key == GLUT_KEY_DOWN:
+        for p in particles:
+            p.vel_x *= 0.9
+            p.vel_y *= 0.9
+        print("[↓] Decreased speed")
 
 
-# if __name__ == '__main__':
-#     main()
+def main():
+    glutInit(sys.argv)
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB)
+    glutInitWindowSize(WIDTH, HEIGHT)
+    glutCreateWindow(b"The Amazing Box")
+    setup_view()
+    glutDisplayFunc(render)
+    glutIdleFunc(update_scene)
+    glutMouseFunc(on_mouse_click)
+    glutKeyboardFunc(on_key_press)
+    glutSpecialFunc(on_special_key)
+    glutMainLoop()
+
+
+if __name__ == '__main__':
+    main()
