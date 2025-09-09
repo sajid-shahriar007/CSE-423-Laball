@@ -178,7 +178,7 @@ if __name__ == "__main__":
 
 
 
-Task 2
+# Task 2
 
 from OpenGL.GL import *
 from OpenGL.GLUT import *
